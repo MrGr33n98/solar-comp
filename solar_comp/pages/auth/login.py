@@ -34,9 +34,9 @@ def login_form() -> rx.Component:
         ),
         
         rx.cond(
-            AuthState.form_error,
+            AuthState.login_error,
             rx.text(
-                AuthState.form_error,
+                AuthState.login_error,
                 color="red.500",
                 size="sm",
                 mb=4,
