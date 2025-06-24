@@ -87,7 +87,7 @@ def profile() -> rx.Component:
                 "Receive product updates",
                 size="3",
                 checked=ProfileState.profile.notifications,
-                on_change=ProfileState.toggle_notifications(),
+                on_change=ProfileState.toggle_notifications,
             ),
             width="100%",
             spacing="4",
