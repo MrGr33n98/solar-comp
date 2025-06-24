@@ -58,22 +58,23 @@ def search_filters() -> rx.Component:
         width="100%",
     )
 
-def company_card(company: CompanyData) -> rx.Component:
+def company_card(company: dict) -> rx.Component:
     """Card individual de empresa."""
     return rx.box(
         rx.vstack(
             rx.hstack(
                 rx.vstack(
                     rx.hstack(
-                        rx.heading(company.name, size="3"),
+                        rx.heading(company["name"], size="3"),
                         rx.cond(
-                            company.is_verified,
+                            company.get("is_verified"),
                             rx.badge("Verificada", color_scheme="green"),
                         ),
                         spacing="2",
                         align="center",
-                    ),                    rx.text(
-                        f"{company.city}, {company.state}",
+                    ),
+                    rx.text(
+                        f"{company['city']}, {company['state']}",
                         color="gray.600",
                         size="2",
                     ),
@@ -85,10 +86,11 @@ def company_card(company: CompanyData) -> rx.Component:
                     rx.hstack(
                         rx.text("⭐", size="3"),
                         rx.text(
-                            f"{company.average_rating:.1f}",
+                            f"{company['average_rating']:.1f}",
                             weight="bold",
-                        ),                        rx.text(
-                            f"({company.total_reviews} avaliações)",
+                        ),
+                        rx.text(
+                            f"({company['total_reviews']} avaliações)",
                             color="gray.600",
                             size="2",
                         ),
@@ -101,31 +103,33 @@ def company_card(company: CompanyData) -> rx.Component:
                 align="start",
             ),
             rx.text(
-                company.description[:200] + "..." if len(company.description) > 200 else company.description,
+                company["description"][:200] + "..." if len(company["description"]) > 200
+                else company["description"],
                 color="gray.700",
                 size="3",
             ),
             rx.hstack(
                 rx.cond(
-                    company.phone,
-                    rx.text(f"📞 {company.phone}", size="2", color="gray.600"),
+                    company.get("phone"),
+                    rx.text(f"📞 {company['phone']}", size="2", color="gray.600"),
                 ),
                 rx.cond(
-                    company.email,
-                    rx.text(f"✉️ {company.email}", size="2", color="gray.600"),
+                    company.get("email"),
+                    rx.text(f"✉️ {company['email']}", size="2", color="gray.600"),
                 ),
                 spacing="4",
             ),
-            rx.hstack(                rx.button(
+            rx.hstack(
+                rx.button(
                     "Ver Detalhes",
-                    on_click=rx.redirect(f"/empresa/{company.id}"),
+                    on_click=rx.redirect(f"/empresa/{company['id']}"),
                     variant="outline",
                     color_scheme="orange",
                 ),
                 rx.button(
                     "Solicitar Orçamento",
                     on_click=lambda: [
-                        LeadState.set_selected_company_id(company.id),
+                        LeadState.set_selected_company_id(company["id"]),
                         rx.redirect("/contato")
                     ],
                     bg="orange.500",

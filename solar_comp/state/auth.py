@@ -58,7 +58,7 @@ class AuthState(rx.State):
     def register(self, user_type: str = "consumer") -> bool:
         """Registra um novo usuário utilizando os dados do formulário."""
         if self.password != self.confirm_password:
-            self.login_error = "As senhas não coincidem"
+            self.form_error = "As senhas não coincidem"
             return False
 
         with Session(self.app.db_engine) as session:
@@ -68,7 +68,7 @@ class AuthState(rx.State):
             ).first()
             
             if existing_user:
-                self.login_error = "Email já cadastrado"
+                self.form_error = "Email já cadastrado"
                 return False
             
             # Cria novo usuário
@@ -91,4 +91,5 @@ class AuthState(rx.State):
             self.user_type = new_user.user_type
             self.is_authenticated = True
             self.login_error = None
+            self.form_error = None
             return True
