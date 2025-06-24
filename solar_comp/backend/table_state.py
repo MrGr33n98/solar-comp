@@ -72,7 +72,7 @@ class TableState(rx.State):
     @rx.var(cache=True)
     def total_pages(self) -> int:
         return (self.total_items // self.limit) + (
-            1 if self.total_items % self.limit else 1
+            1 if self.total_items % self.limit else 0
         )
 
     @rx.var(cache=True, initial_value=[])

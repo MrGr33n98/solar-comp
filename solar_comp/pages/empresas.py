@@ -88,7 +88,7 @@ def company_card(company: Dict[str, Any]) -> rx.Component:
                             f"{company['average_rating']:.1f}",
                             weight="bold",
                         ),                        rx.text(
-                            f"({company.total_reviews} avaliações)",
+                            f"({company['total_reviews']} avaliações)",
                             color="gray.600",
                             size="2",
                         ),
@@ -101,32 +101,32 @@ def company_card(company: Dict[str, Any]) -> rx.Component:
                 align="start",
             ),
             rx.text(
-                company.description[:200] + "..." if len(company.description) > 200 
-                else company.description,
+                company["description"][:200] + "..." if len(company["description"]) > 200
+                else company["description"],
                 color="gray.700",
                 size="3",
             ),
             rx.hstack(
                 rx.cond(
-                    company.phone,
-                    rx.text(f"📞 {company.phone}", size="2", color="gray.600"),
+                    company["phone"],
+                    rx.text(f"📞 {company['phone']}", size="2", color="gray.600"),
                 ),
                 rx.cond(
-                    company.email,
-                    rx.text(f"✉️ {company.email}", size="2", color="gray.600"),
+                    company["email"],
+                    rx.text(f"✉️ {company['email']}", size="2", color="gray.600"),
                 ),
                 spacing="4",
             ),
             rx.hstack(                rx.button(
                     "Ver Detalhes",
-                    on_click=rx.redirect(f"/empresa/{company.id}"),
+                    on_click=rx.redirect(f"/empresa/{company['id']}"),
                     variant="outline",
                     color_scheme="orange",
                 ),
                 rx.button(
                     "Solicitar Orçamento",
                     on_click=lambda: [
-                        LeadState.set_selected_company_id(company.id),
+                        LeadState.set_selected_company_id(company["id"]),
                         rx.redirect("/contato")
                     ],
                     bg="orange.500",

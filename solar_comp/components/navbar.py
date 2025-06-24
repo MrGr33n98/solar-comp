@@ -2,23 +2,6 @@
 
 import reflex as rx
 from ..state.auth import AuthState
-
-def navbar() -> rx.Component:
-    """Barra de navegação."""
-    return rx.hstack(
-        # Logo e nome
-        rx.hstack(
-            rx.heading(
-                "Solar Marketplace",
-                size="md",
-                color="orange.500",
-            ),
-            spacing="2",
-            on_click=rx.redirect("/"),
-            cursor="pointer",
-        ),
-
-
 def menu_item(text: str, url: str) -> rx.Component:
     """Menu item.
 
