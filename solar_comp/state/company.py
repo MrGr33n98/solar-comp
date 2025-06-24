@@ -3,6 +3,22 @@
 import reflex as rx
 from sqlmodel import Session, select
 from typing import List, Optional, Dict, Any
+
+
+class CompanyData(rx.Base):
+    """Representation of a company used in the UI."""
+
+    id: str
+    name: str
+    description: str = ""
+    city: str = ""
+    state: str = ""
+    average_rating: float = 0.0
+    total_reviews: int = 0
+    phone: str = ""
+    email: str = ""
+    website: str = ""
+    is_verified: bool = False
 from datetime import datetime
 
 from ..models.company import Company, CompanyService, CompanyProject
@@ -13,8 +29,8 @@ class CompanyState(rx.State):
     """Estado para gerenciar operações de empresas."""
 
     # Estado das empresas
-    companies: List[Dict[str, Any]] = []
-    selected_company: Optional[Dict[str, Any]] = None
+    companies: List[CompanyData] = []
+    selected_company: Optional[CompanyData] = None
     loading: bool = False
 
     # Filtros de busca
@@ -43,47 +59,50 @@ class CompanyState(rx.State):
             ).all()
             
             self.companies = [
-                {
-                    "id": str(company.id),
-                    "name": company.name,
-                    "description": company.description or "",
-                    "city": company.city,
-                    "state": company.state,
-                    "average_rating": company.average_rating,
-                    "total_reviews": company.total_reviews,
-                    "phone": company.phone or "",
-                    "email": company.email or "",
-                    "website": company.website or "",
-                    "is_verified": company.is_verified,
-                }
+                CompanyData(
+                    id=str(company.id),
+                    name=company.name,
+                    description=company.description or "",
+                    city=company.city,
+                    state=company.state,
+                    average_rating=company.average_rating,
+                    total_reviews=company.total_reviews,
+                    phone=company.phone or "",
+                    email=company.email or "",
+                    website=company.website or "",
+                    is_verified=company.is_verified,
+                )
                 for company in companies
             ]
         self.loading = False
 
-    def filter_companies(self) -> List[Dict[str, Any]]:
+    def filter_companies(self) -> List[CompanyData]:
         """Filtra empresas baseado nos critérios de busca."""
         filtered = self.companies
         
         if self.search_query:
             query = self.search_query.lower()
             filtered = [
-                company for company in filtered
-                if query in company["name"].lower() 
-                or query in company["description"].lower()
+                company
+                for company in filtered
+                if query in company.name.lower()
+                or query in company.description.lower()
             ]
         
         if self.selected_city:
             filtered = [
-                company for company in filtered
-                if company["city"].lower() == self.selected_city.lower()
+                company
+                for company in filtered
+                if company.city.lower() == self.selected_city.lower()
             ]
         
         try:
             min_rating = float(self.min_rating)
             if min_rating > 0:
                 filtered = [
-                    company for company in filtered
-                    if company["average_rating"] >= min_rating
+                    company
+                    for company in filtered
+                    if company.average_rating >= min_rating
                 ]
         except (ValueError, TypeError):
             pass  # Ignora se não for um número válido
