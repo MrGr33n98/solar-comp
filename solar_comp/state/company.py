@@ -76,6 +76,7 @@ class CompanyState(rx.State):
             ]
         self.loading = False
 
+    @rx.var
     def filter_companies(self) -> List[CompanyData]:
         """Filtra empresas baseado nos critérios de busca."""
         filtered = self.companies
