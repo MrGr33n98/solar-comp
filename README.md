@@ -21,7 +21,7 @@ This template has the following directory structure:
     ├── __init__.py
     ├── components
     │   ├── __init__.py
-    │   ├── navbar.py
+    │   ├── navbar_new.py
     │   └── sidebar.py
     ├── pages
     │   ├── __init__.py
@@ -54,7 +54,7 @@ To add a new page:
 1. Add a new file in `{your_app}/pages/`. We recommend using one file per page, but you can also group pages in a single file.
 2. Add a new function with the `@template` decorator, which takes the same arguments as `@rx.page`.
 3. Import the page in your `{your_app}/pages/__init__.py` file and it will automatically be added to the app.
-4. Order the pages in `{your_app}/components/sidebar.py` and `{your_app}/components/navbar.py`.
+4. Order the pages in `{your_app}/components/sidebar.py` and `{your_app}/components/navbar_new.py`.
 
 
 ### Adding Components
